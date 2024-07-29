@@ -276,7 +276,7 @@ button:focus {
 
 .header_area .navbar .nav .nav-item:hover .nav-link,
 .header_area .navbar .nav .nav-item.active .nav-link {
-  color: #ffffff;
+  color: #FF0000;
 }
 
 .header_area .navbar .nav .nav-item.submenu {
@@ -3930,4 +3930,33 @@ h6 {
 ============================================================================================ */
 /*---------------------------------------------------- */
 
-/*# sourceMappingURL=style.css.map */
+/* Table column width adjustments for symmetry */
+#projects-table th, #projects-table td {
+  text-align: left;
+  vertical-align: middle;
+}
+
+#projects-table th.description, #projects-table td.description {
+  width: 30%; /* Adjust based on your content */
+}
+
+#projects-table th {
+  min-width: 120px; /* Ensures minimum width for smaller columns */
+}
+
+/* Styling for the expand/collapse button */
+.expand-button {
+  cursor: pointer;
+  color: #007bff; /* Bootstrap link color for consistency */
+  text-decoration: underline;
+}
+
+.expandable-content {
+  display: none; /* Initially hide the full content */
+  white-space: pre-wrap; /* Maintains whitespace formatting */
+}
+
+.container {
+  padding-left: 15px;  /* Adjust as necessary */
+  padding-right: 15px; /* Adjust as necessary */
+}

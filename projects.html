@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link rel="icon" href="img/H-logo.png" type="image/png" />
+    <title>A r h a m</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.css" />
+    <link rel="stylesheet" href="vendors/linericon/style.css" />
+    <script
+      src="https://kit.fontawesome.com/cacb60c650.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="vendors/owl-carousel/owl.carousel.min.css" />
+    <link rel="stylesheet" href="css/magnific-popup.css" />
+    <link rel="stylesheet" href="vendors/nice-select/css/nice-select.css" />
+    <link rel="stylesheet" href="vendors/animate-css/animate.css" />
+    <link rel="stylesheet" href="vendors/flaticon/flaticon.css" />
+    <!-- main css -->
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+
+  <body>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=UA-99126974-1"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "UA-99126974-1");
+    </script>
+
+    <!--================Header Menu Area =================-->
+    <header class="header_area">
+      <div class="main_menu">
+        <nav class="navbar navbar-expand-lg navbar-light">
+          <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <a class="navbar-brand" href="index.html"
+              ><img src="img/H-logo.png" width="80px" alt=""
+            /></a>
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-toggle="collapse"
+              data-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div
+              class="collapse navbar-collapse offset"
+              id="navbarSupportedContent"
+            >
+              <ul class="nav navbar-nav menu_nav justify-content-end">
+                <li class="nav-item active">
+                  <a class="nav-link" href="index.html">Back</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </header>
+    <!--================Header Menu Area =================-->
+    
+        <div class="container mt-5">
+            <h1 class="text-center">Project Archive</h1>
+            <table class="table table-hover" id="projects-table">
+                <thead>
+                    <tr>
+                        <th>Project ID</th>
+                        <th>Project Name</th>
+                        <th>Description</th>
+                        <th>Tech Stack</th>
+                        <th>GitHub</th>
+                        <th>Created Date</th>
+                        <th>Last Updated</th>
+                    </tr>
+                </thead>
+                <tbody id="project-list">
+                    <!-- Projects will be inserted here -->
+                </tbody>
+            </table>
+        </div>
+    
+        <script src="js/jquery-3.2.1.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                fetch('https://api.github.com/users/arham-anwar/repos')
+                .then(response => response.json())
+                .then(data => {
+                    data.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
+                    const table = document.getElementById('project-list');
+                    data.forEach((repo, index) => {
+                        const row = table.insertRow();
+                        const idCell = row.insertCell(0);
+                        const nameCell = row.insertCell(1);
+                        const descCell = row.insertCell(2);
+                        const techStackCell = row.insertCell(3);
+                        const githubCell = row.insertCell(4);
+                        const createdCell = row.insertCell(5);
+                        const updatedCell = row.insertCell(6);
+    
+                        idCell.innerHTML = index + 1;
+                        nameCell.innerHTML = repo.name;
+                        descCell.innerHTML = `<div class="expandable-content">${repo.description || 'No description'}</div><span class="expand-button" style="color: #007bff; cursor: pointer; text-decoration: underline;">More</span>`;
+                        techStackCell.innerHTML = extractTechStack(repo.description || 'No description');
+                        githubCell.innerHTML = `<a href="${repo.html_url}" target="_blank"><i class="fab fa-github"></i></a>`;
+                        createdCell.innerHTML = new Date(repo.created_at).toLocaleDateString('en-US', { month: 'short', year: '2-digit' });
+                        updatedCell.innerHTML = new Date(repo.updated_at).toLocaleDateString('en-US', { month: 'short', year: '2-digit' });
+    
+                        // Event listener for the expand button
+                        descCell.querySelector('.expand-button').addEventListener('click', function() {
+                            const content = this.previousElementSibling;
+                            const isExpanded = content.style.display === 'block';
+                            content.style.display = isExpanded ? 'none' : 'block';
+                            this.textContent = isExpanded ? 'More' : 'Less';
+                        });
+                    });
+                })
+                .catch(error => console.error('Error fetching data: ', error));
+            });
+
+            function extractTechStack(description) {
+                // This is a mock function to simulate LLM processing.
+                // Replace this with actual LLM API call to extract tech stack.
+                const keywords = ['Python', 'JavaScript', 'React', 'Node.js', 'Django', 'Flask', 'TensorFlow', 'Keras', 'PyTorch', 'AWS', 'Azure', 'GCP'];
+                const techStack = keywords.filter(keyword => description.includes(keyword));
+                return techStack.length ? techStack.join(', ') : 'Not specified';
+            }
+        </script>
+  </body>
+</html>
